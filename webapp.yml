@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  connection: local
+  vars:
+    resource_group: table3aransiblerg
+    webapp_name: table3arwebapp
+    location: ukwest
+  tasks:
+    - name: Need an RG
+      azure_rm_resourcegroup:
+        name: "{{ resource_group }}"
+        location: "{{ location }}"
+    - name: How about a webapp
+      azure_rm_webapp:
+        resource_group: "{{ resource_group }}"
+        name: "{{ webapp_name }}"
+        plan:
+          resource_group: "{{ resource_group }}"
+          name: table3arappplan
+          is_linux: true
+          sku: S1
+          number_of_workers: 1
+        container_settings:
+          name: nginx
